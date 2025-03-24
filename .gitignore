@@ -3,6 +3,7 @@
 
 # .tfstate files
 *.tfstate
+*.zip
 *.tfstate.*
 
 # Crash log files
