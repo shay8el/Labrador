@@ -21,10 +21,13 @@ def extract_emails(content: str) -> List[str]:
 def scan_file(bucket: str, key: str) -> Dict:
     try:
         logger.info(f"Scanning file: {key} in bucket: {bucket}")
-        response = s3_client.get_object(Bucket=bucket, Key=key)
-        content = response['Body'].read().decode('utf-8')
+        response = s3_client.get_object(Bucket=bucket, Key=key)        
+        try:
+            content = response['Body'].read().decode('utf-8')
+        except:
+            logger.info(f"File {key} in bucket {bucket} is not a readable file")
+            return None
         emails = extract_emails(content)
-        
         return {
             'bucket': bucket,
             'file': key,
@@ -52,7 +55,8 @@ def scan_bucket(bucket: str) -> List[Dict]:
             for obj in page['Contents']:
                 if obj['Size'] > 0:
                     result = scan_file(bucket, obj['Key'])
-                    results.append(result)
+                    if result is not None:
+                        results.append(result)
                     
         return results
     except Exception as e:
