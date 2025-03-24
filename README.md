@@ -84,5 +84,3 @@ terraform destroy
 
 - This solution is designed for low-volume scanning
 - Large files or high-frequency scanning may require adjustments
-- Consider implementing pagination for large buckets
-- Monitor Lambda execution time and adjust timeout if needed 
